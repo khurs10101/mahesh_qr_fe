@@ -1,0 +1,5 @@
+export const ENDPOINT = "http://localhost:5000"
+export const ADMIN = ENDPOINT + "/api/admins"
+export const GENERATE_COUPON = ADMIN + "/coupons/generate"
+export const GET_ALL_USERS_ADMIN = ADMIN + "/users/list"
+export const REDEEM_USER_COUPON_BY_ADMIN = ADMIN + "/coupons/redeem"
