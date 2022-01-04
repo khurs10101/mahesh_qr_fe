@@ -1,28 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
-// import MyRouter from './routers'
+import { isUndefined } from "lodash";
+import { useState } from "react";
+import { useJwt } from "react-jwt";
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
-  Link,
   Routes
 } from "react-router-dom";
-import CouponGenerationPage from "./pages/couponGenerationPage";
-import User from './pages/userPage'
+import AuthPage from './pages/AuthPage';
+import Dashboard from './pages/Dashboard';
+
+
 
 function App() {
+
+
+
+  const adminToken = !isUndefined(localStorage.getItem("adminToken")) ? localStorage.getItem("adminToken") : ""
+  const { decodedToken, isExpired } = useJwt(adminToken)
+
+
   return (
-    <Router>
-      <div>
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
+    <div>
+      <Router>
         <Routes>
-          <Route path="/" element={<CouponGenerationPage />} />
-          <Route path="/user" element={<User />} />
+          <Route path="/" element={!isExpired ? <Dashboard /> : <AuthPage authType={0} />} />
+          <Route path="/signin" element={<AuthPage authType={0} />} />
+          <Route path="/signup" element={<AuthPage authType={1} />} />
         </Routes>
-      </div>
-    </Router>
+      </Router>
+    </div>
   );
 }
 

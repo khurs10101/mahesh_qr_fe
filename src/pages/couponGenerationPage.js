@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { GENERATE_COUPON, ENDPOINT } from '../constants'
@@ -11,6 +11,43 @@ const CouponGenerationPage = () => {
     const [value, setValue] = useState(0)
     const [qty, setQty] = useState(0)
     const [couponsList, setCouponsList] = useState([])
+
+    useEffect(() => {
+        handleGetListOfProductsFromTally()
+    }, [])
+
+    const handleGetListOfProductsFromTally = async () => {
+        let xmlBodyStr = `
+        <ENVELOPE>
+            <HEADER>
+                <TALLYREQUEST>Export Data</TALLYREQUEST>
+            </HEADER>
+        <BODY>
+            <EXPORTDATA>
+                <REQUESTDESC>
+                    <REPORTNAME>ODBC Report</REPORTNAME>
+                    <SQLREQUEST Type='General' Method='SQLExecute'>Select $Name from StockItem</SQLREQUEST>
+                    <STATICVARIABLES>
+                        <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
+                    </STATICVARIABLES>
+                </REQUESTDESC>
+                <REQUESTDATA />
+            </EXPORTDATA>
+        </BODY>
+        </ENVELOPE>
+        `
+
+        try {
+            let response = await Axios.post(`http://localhost:9000`, xmlBodyStr, {
+                
+            })
+
+            console.log(response.data)
+        } catch (e) {
+            console.error(e)
+        }
+
+    }
 
     const handleGenerateCoupon = async (e) => {
         e.preventDefault()

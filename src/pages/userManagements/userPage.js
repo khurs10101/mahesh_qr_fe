@@ -2,7 +2,7 @@ import Axios from "axios";
 import React, { Fragment, useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { GET_ALL_USERS_ADMIN, REDEEM_USER_COUPON_BY_ADMIN } from '../constants'
+import { GET_ALL_USERS_ADMIN, REDEEM_USER_COUPON_BY_ADMIN } from '../../constants'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,12 +10,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import UserJson from '../../json/users'
+import { Divider } from "@mui/material";
 
-const User = () => {
+const User = (props) => {
     const [userList, setUserList] = useState([])
     const [pointsToRedeem, setPointsToRedeem] = useState([])
     useEffect(() => {
         handleGetAllUsers()
+        // setUserList(UserJson)
     }, [userList])
 
     const handleGetAllUsers = async () => {
@@ -26,7 +29,6 @@ const User = () => {
     }
 
     const handleRedeemPoints = async (row, idx) => {
-        debugger
         const param = {
             userId: row._id,
             newValue: parseInt(pointsToRedeem[idx])
@@ -42,6 +44,19 @@ const User = () => {
             <div style={{
                 margin: '15px',
             }}>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                }}>
+                    <TextField variant="outlined" label="Search" />
+                    <Button variant="contained">Back</Button>
+                </div>
+                <div style={{
+                    marginTop:'16px'
+                }}>
+                    <Divider />
+                </div>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
@@ -52,7 +67,8 @@ const User = () => {
                                 <TableCell align="right">Collected</TableCell>
                                 <TableCell align="right">Redeemed</TableCell>
                                 <TableCell align="right">Available</TableCell>
-                                <TableCell align="right">Redeem Now</TableCell>
+                                {/* <TableCell align="right">Redeem Now</TableCell> */}
+                                <TableCell align="right">Is Active</TableCell>
                                 <TableCell align="right">Action</TableCell>
                             </TableRow>
                         </TableHead>
@@ -70,13 +86,23 @@ const User = () => {
                                     <TableCell align="right">{row.collectedPoints}</TableCell>
                                     <TableCell align="right">{row.redeemedPoints}</TableCell>
                                     <TableCell align="right">{parseInt(row.collectedPoints) - parseInt(row.redeemedPoints)}</TableCell>
-                                    <TableCell align="right">
+                                    {/* <TableCell align="right">
                                         <TextField value={pointsToRedeem[idx]} type="number" id="outlined-basic" label="Redeem Value" variant="outlined" onChange={(e) => setPointsToRedeem({ ...pointsToRedeem, [idx]: e.target.value })} />
+                                    </TableCell> */}
+                                    <TableCell align="right">
+                                        {
+                                            row.isActive === 0 ? "Blocked" : "Active"
+                                        }
                                     </TableCell>
                                     <TableCell align="right">
-                                        <Button variant="contained" onClick={() => {
-                                            handleRedeemPoints(row, idx)
-                                        }}>Redeem</Button>
+                                        <Button variant="contained" onClick={(e, name) => {
+                                            // handleRedeemPoints(row, idx)
+                                            let payload = {
+                                                name: "fromUserPage",
+                                                data: row
+                                            }
+                                            props.handleParentClick(e, payload)
+                                        }}>Details</Button>
                                     </TableCell>
                                 </TableRow>
                             ))}

@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Rohit Sahu",
+        "phone": "7001231231",
+        "bankName": "SBI",
+        "bankIfsc": "SBIN0012312",
+        "bankAccountNumber": "SBI123123123",
+        "collectedPoints": 15,
+        "redeemedPoints": 5,
+        "userName": "rohit@123",
+        "password": "abc123123",
+        "isActive": 1
+    },
+    {
+        "name": "Mohit Lalu",
+        "phone": "7001231232",
+        "bankName": "SBI",
+        "bankIfsc": "SBIN0012313",
+        "bankAccountNumber": "SBI123123122",
+        "collectedPoints": 15,
+        "redeemedPoints": 5,
+        "userName": "rohit@123",
+        "password": "abc123123",
+        "isActive": 0
+    },
+    {
+        "name": "Virat Kohli",
+        "phone": "7001231231",
+        "bankName": "SBI",
+        "bankIfsc": "SBIN0012312",
+        "bankAccountNumber": "SBI123123123",
+        "collectedPoints": 15,
+        "redeemedPoints": 5,
+        "userName": "rohit@123",
+        "password": "abc123123",
+        "isActive": 0
+    },
+    {
+        "name": "Srinivasana Alluarjuna Prabhasa",
+        "phone": "7001231231",
+        "bankName": "SBI",
+        "bankIfsc": "SBIN0012312",
+        "bankAccountNumber": "SBI123123123",
+        "collectedPoints": 15,
+        "redeemedPoints": 5,
+        "userName": "rohit@123",
+        "password": "abc123123",
+        "isActive": 1
+    },
+    {
+        "name": "Mallik Uddin",
+        "phone": "7001231231",
+        "bankName": "SBI",
+        "bankIfsc": "SBIN0012312",
+        "bankAccountNumber": "SBI123123123",
+        "collectedPoints": 15,
+        "redeemedPoints": 5,
+        "userName": "rohit@123",
+        "password": "abc123123",
+        "isActive": 0
+    }
+]
