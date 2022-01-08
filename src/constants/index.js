@@ -1,4 +1,5 @@
-export const ENDPOINT = "http://localhost:5000"
+// export const ENDPOINT = "http://localhost:5000"
+export const ENDPOINT = "http://52.149.208.93:5000"
 const ADMIN = ENDPOINT + "/api/admins"
 const INVENTORY = ENDPOINT + "/api/inventory"
 export const ADMIN_SIGN_UP = ADMIN + "/signup"
