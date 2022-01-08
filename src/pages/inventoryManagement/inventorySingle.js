@@ -160,30 +160,56 @@ const InventorySingle = (props) => {
             isError: false,
             message: ''
         })
-        console.log("clicked generate")
-        const params = {
-            companyName: state.companyName,
-            name: state.description,
-            label: state.label,
-            value: parseInt(state.value),
-            quantity: parseInt(state.quantity),
-            couponType: state.couponType
-        }
-
-        if (params.value > 0 && params.quantity > 0) {
-
-            const response = await axios.post(GENERATE_COUPON, params)
-
-            if (response.status == 201) {
-                // setCouponsList(response.data.coupons)
-                handleGetBatchHistory()
+        try {
+            setIsLoading(true)
+            console.log("clicked generate")
+            const params = {
+                companyName: state.companyName,
+                name: state.description,
+                label: state.label,
+                value: parseInt(state.value),
+                quantity: parseInt(state.quantity),
+                couponType: state.couponType
             }
-        } else {
-            setMessage({
-                isError: true,
-                message: 'Please enter valid coupon value and quantity'
-            })
+
+            if (params.value > 0 && params.quantity > 0) {
+
+                if (params.quantity <= 48) {
+                    const response = await axios.post(GENERATE_COUPON, params)
+
+                    if (response.status == 201) {
+                        handleGetBatchHistory()
+                    }
+                } else {
+                    setMessage({
+                        isError: true,
+                        message: 'Coupon quantity cant be greater than 48'
+                    })
+                }
+
+
+            } else {
+                setMessage({
+                    isError: true,
+                    message: 'Please enter valid coupon value and quantity'
+                })
+            }
+        } catch (e) {
+            console.error(e)
+            if (e.isAxiosError) {
+                if (!isUndefined(e.response)) {
+                    if (!isUndefined(e.response.data)) {
+                        setMessage({
+                            isError: true,
+                            message: e.response.data.message
+                        })
+                    }
+                }
+            }
+        } finally {
+            setIsLoading(false)
         }
+
 
     }
 
@@ -241,14 +267,14 @@ const InventorySingle = (props) => {
                 alignItems: 'center'
             }}>
                 <h1>Product Details Page</h1>
-                <div>
+                {/* <div>
                     <Button onClick={(e) => {
                         let payload = {
                             name: "backFromInventorySingle"
                         }
                         props.handleParentClick(e, payload)
                     }} variant="contained">Back</Button>
-                </div>
+                </div> */}
             </div>
 
 

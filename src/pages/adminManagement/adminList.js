@@ -1,7 +1,7 @@
 import axios from "axios";
 import { isUndefined, isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
-import { ADMIN_LIST } from "../../constants";
+import { ADMIN_LIST, DELETE_ADMIN } from "../../constants";
 import {
     Alert, Box, Button, Divider,
     LinearProgress, Table, TableBody,
@@ -84,6 +84,37 @@ const AdminList = (props) => {
         }
     }
 
+    const handleDelete = async (adminId) => {
+        try {
+            setIsLoading(true)
+            const response = await axios.post(DELETE_ADMIN, { adminId })
+            if (!isUndefined(response)) {
+                if (response.status === 200) {
+
+                    setMessage({
+                        isError: false,
+                        message: response.data.message
+                    })
+                    handleFetch()
+                }
+            }
+        } catch (e) {
+            console.error(e)
+            if (e.isAxiosError) {
+                if (!isUndefined(e.response)) {
+                    if (!isUndefined(e.response.data)) {
+                        setMessage({
+                            isError: true,
+                            message: e.response.data.message
+                        })
+                    }
+                }
+            }
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     return (
         <div style={{
         }}>
@@ -125,7 +156,7 @@ const AdminList = (props) => {
                             <TableRow>
                                 {/* <TableCell>Name</TableCell> */}
                                 <TableCell>Email</TableCell>
-                                <TableCell align="right">Action</TableCell>
+
                                 <TableCell align="right">Delete</TableCell>
                             </TableRow>
                         </TableHead>
@@ -138,12 +169,7 @@ const AdminList = (props) => {
                                         {/* <TableCell>{admin.name}</TableCell> */}
                                         <TableCell component="th" scope="row">{admin.email}</TableCell>
                                         <TableCell align="right" component="th" scope="row">
-                                            <Button variant="outlined">
-                                                Update
-                                            </Button>
-                                        </TableCell>
-                                        <TableCell align="right" component="th" scope="row">
-                                            <DeleteOutlined />
+                                            <DeleteOutlined onClick={() => handleDelete(admin._id)} />
                                         </TableCell>
                                     </TableRow>
                                 ))

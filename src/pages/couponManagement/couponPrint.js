@@ -10,7 +10,7 @@ import {
 import { Page, Text, View, Document, StyleSheet, PDFViewer, Image } from '@react-pdf/renderer';
 import { isUndefined, isEmpty } from "lodash"
 import axios from 'axios'
-import { GET_COUPONS_BY_BATCH } from '../../constants'
+import { ENDPOINT, GET_COUPONS_BY_BATCH } from '../../constants'
 
 let defaultMessage = {
     isError: false,
@@ -35,28 +35,29 @@ const CouponPrint = (props) => {
     const styles = StyleSheet.create({
         page: {
             flexDirection: 'row',
-            backgroundColor: '#E4E4E4'
+            backgroundColor: '#E4E4E4',
+            
         },
         label: {
             height: '21.1mm',
             width: '45.7mm',
-            border: '0.5px solid red',
+            border: '0.5px solid black',
             flexDirection: 'row'
         },
         mainSection: {
             width: '190mm',
             height: '254mm',
-            border: '1px solid black',
-            marginLeft: '9.2mm',
-            marginRight: '9.2mm',
-            marginTop: '20mm',
-            marginBottom: '20mm',
+            border: '0.2px solid black',
+            marginLeft: '10mm',
+            marginRight: '10mm',
+            marginTop: '21.5mm',
+            marginBottom: '21.5mm',
         },
         singleRow: {
             flexDirection: 'row'
         },
         rowGap: {
-            marginLeft: '2.2mm'
+            marginLeft: '2.4mm'
         },
         qr: {
             height: '20mm',
@@ -92,11 +93,11 @@ const CouponPrint = (props) => {
                             let coupon = couponList[actualIndex]
                             let colX = (<Fragment>
                                 <View style={styles.label}>
-                                    {!isUndefined(coupon.couponUrl) && <Image style={styles.qr} src={`http://localhost:5000/${coupon.couponUrl}`} />}
+                                    {/* {!isUndefined(coupon.couponUrl) && <Image style={styles.qr} src={`${ENDPOINT}/${coupon.couponUrl}`} />} */}
                                     <View style={styles.innerCouponView}>
-                                        <Text style={styles.fontCouponId}>{coupon._id}</Text>
+                                        {/* <Text style={styles.fontCouponId}>{coupon._id}</Text>
                                         <Text style={styles.fontCouponType}>{coupon.couponType}</Text>
-                                        <Text style={styles.fontCouponText}>{coupon.label}</Text>
+                                        <Text style={styles.fontCouponText}>{coupon.label}</Text> */}
                                     </View>
                                 </View>
                                 {
@@ -192,7 +193,7 @@ const CouponPrint = (props) => {
         }}>
             {!isEmpty(message.message) && <Alert severity={message.isError ? "error" : "info"}>{message.message}</Alert>}
         </div>
-        <div style={{
+        {/* <div style={{
             display: 'flex'
         }}>
             <div style={{
@@ -203,7 +204,7 @@ const CouponPrint = (props) => {
             <div>
                 <TextField label="End to" variant="outlined" />
             </div>
-        </div>
+        </div> */}
         <div>
             {!isEmpty(couponList) &&
                 <div style={{
