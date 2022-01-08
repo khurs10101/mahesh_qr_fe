@@ -35,33 +35,31 @@ const CouponPrint = (props) => {
     const styles = StyleSheet.create({
         page: {
             flexDirection: 'row',
-            backgroundColor: '#E4E4E4',
-            
         },
         label: {
             height: '21.1mm',
             width: '45.7mm',
             border: '0.5px solid black',
-            flexDirection: 'row'
+            flexDirection: 'row',
         },
         mainSection: {
             width: '190mm',
             height: '254mm',
             border: '0.2px solid black',
-            marginLeft: '10mm',
-            marginRight: '10mm',
-            marginTop: '21.5mm',
-            marginBottom: '21.5mm',
+            marginLeft: '9.85mm',
+            marginRight: '9.85mm',
+            marginTop: '21.3mm',
+            marginBottom: '21.3mm',
         },
         singleRow: {
             flexDirection: 'row'
         },
         rowGap: {
-            marginLeft: '2.4mm'
+            marginLeft: '2.5mm'
         },
         qr: {
             height: '20mm',
-            width: '20mm'
+            width: '20mm',
         },
         fontCouponType: {
             fontSize: '4mm'
@@ -76,6 +74,60 @@ const CouponPrint = (props) => {
             padding: '1.5mm'
         }
     });
+
+    const labelStyle = StyleSheet.create({
+        page: {
+            width: '62mm',
+        },
+
+        label: {
+            width: '62mm',
+            height: '25mm',
+            flexDirection: 'row'
+        },
+
+        innerCouponView: {
+            padding: '1.5mm'
+        },
+        qr: {
+            height: '20mm',
+            width: '20mm',
+        },
+        fontCouponType: {
+            fontSize: '4mm'
+        },
+        fontCouponText: {
+            fontSize: '3mm'
+        },
+        fontCouponId: {
+            fontSize: '1.5mm',
+        },
+    })
+
+    const generateLabelForBrother = () => {
+        let lenOfCouponList = couponList.length
+        let couponRow = []
+        for (let i = 0; i < lenOfCouponList; i++) {
+            let coupon = couponList[i]
+            const couponJsx = (
+                <Fragment>
+                    <View style={labelStyle.label}>
+
+                        {!isUndefined(coupon.couponUrl) && <Image style={labelStyle.qr} src={`${ENDPOINT}/${coupon.couponUrl}`} />}
+                        <View style={labelStyle.innerCouponView}>
+                            <Text style={labelStyle.fontCouponId}>{coupon._id}</Text>
+                            <Text style={labelStyle.fontCouponType}>{coupon.couponType}</Text>
+                            <Text style={labelStyle.fontCouponText}>{coupon.label}</Text>
+                        </View>
+
+                    </View>
+                </Fragment>
+            )
+            couponRow.push(couponJsx)
+        }
+
+        return couponRow
+    }
 
     const generateDocumnet = () => {
         let lenOfCouponList = couponList.length
@@ -93,12 +145,14 @@ const CouponPrint = (props) => {
                             let coupon = couponList[actualIndex]
                             let colX = (<Fragment>
                                 <View style={styles.label}>
-                                    {/* {!isUndefined(coupon.couponUrl) && <Image style={styles.qr} src={`${ENDPOINT}/${coupon.couponUrl}`} />} */}
+
+                                    {!isUndefined(coupon.couponUrl) && <Image style={styles.qr} src={`${ENDPOINT}/${coupon.couponUrl}`} />}
                                     <View style={styles.innerCouponView}>
-                                        {/* <Text style={styles.fontCouponId}>{coupon._id}</Text>
+                                        <Text style={styles.fontCouponId}>{coupon._id}</Text>
                                         <Text style={styles.fontCouponType}>{coupon.couponType}</Text>
-                                        <Text style={styles.fontCouponText}>{coupon.label}</Text> */}
+                                        <Text style={styles.fontCouponText}>{coupon.label}</Text>
                                     </View>
+
                                 </View>
                                 {
                                     j !== 3 && <View style={styles.rowGap}>
@@ -143,10 +197,14 @@ const CouponPrint = (props) => {
 
     const HandleCouponPDF = () => (
         <Document>
-            <Page size="A4" style={styles.page}>
+            <Page style={labelStyle.page}>
                 <View style={styles.mainSection}>
                     {generateDocumnet()}
                 </View>
+                {/* <View>
+                    {generateLabelForBrother()}
+                </View> */}
+
             </Page>
         </Document>
     );
