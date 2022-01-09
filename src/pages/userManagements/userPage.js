@@ -12,6 +12,11 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import UserJson from '../../json/users'
 import { Divider } from "@mui/material";
+import ReactExport from 'react-data-export';
+
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+
 
 const User = (props) => {
     const [userList, setUserList] = useState([])
@@ -39,6 +44,45 @@ const User = (props) => {
             handleGetAllUsers()
         }
     }
+
+    const handleOnClick = async (e) => {
+        if (e.target.name === "export") {
+            handleExportExcelData()
+        }
+    }
+
+    const handleExportExcelData = () => {
+
+    }
+
+
+    const DataSet = [
+        {
+            columns: [
+                { title: "Name", style: { font: { sz: "18", bold: true } }, width: { wpx: 125 } }, // width in pixels
+                { title: "Phone", style: { font: { sz: "18", bold: true } }, width: { wch: 30 } }, // width in characters
+                { title: "Bank Name", style: { font: { sz: "18", bold: true } }, width: { wpx: 100 } }, // width in pixels
+                { title: "Bank Account Number", style: { font: { sz: "18", bold: true } }, width: { wpx: 125 } }, // width in pixels
+                { title: "Bank IFSC code", style: { font: { sz: "18", bold: true } }, width: { wpx: 100 } }, // width in pixels
+                { title: "Collected points", style: { font: { sz: "18", bold: true } }, width: { wpx: 125 } }, // width in pixels
+                { title: "Redeemed", style: { font: { sz: "18", bold: true } }, width: { wch: 30 } }, // width in characters
+                { title: "Available", style: { font: { sz: "18", bold: true } }, width: { wpx: 125 } }, // width in pixels
+                { title: "Is Active", style: { font: { sz: "18", bold: true } }, width: { wpx: 125 } }, // width in pixels
+            ],
+            data: userList.map((data) => [
+                { value: data.name, style: { font: { sz: "14" } } },
+                { value: data.phone, style: { font: { sz: "14" } } },
+                { value: data.bankName, style: { font: { color: { rgb: "ffffff" } }, fill: { patternType: "solid", fgColor: { rgb: "3461eb" } } } },
+                { value: data.bankAccountNumber, style: { font: { color: { rgb: "ffffff" } }, fill: { patternType: "solid", fgColor: { rgb: "eb1207" } } } },
+                { value: data.bankIfscCode, style: { font: { color: { rgb: "ffffff" } }, fill: { patternType: "solid", fgColor: { rgb: "4bd909" } } } },
+                { value: data.collectedPoints, style: { font: { color: { rgb: "ffffff" } }, fill: { patternType: "solid", fgColor: { rgb: "ed14f5" } } } },
+                { value: data.redeemedPoints, style: { font: { color: { rgb: "ffffff" } }, fill: { patternType: "solid", fgColor: { rgb: "35bdb4" } } } },
+                { value: parseInt(data.collectedPoints) - parseInt(data.redeemedPoints), style: { font: { color: { rgb: "ffffff" } }, fill: { patternType: "solid", fgColor: { rgb: "ed14f5" } } } },
+                { value: data.isActive === 0 ? "Blocked" : "Active", style: { font: { color: { rgb: "ffffff" } }, fill: { patternType: "solid", fgColor: { rgb: "3461eb" } } } },
+            ])
+        }
+    ]
+
     return (
         <Fragment>
             <div style={{
@@ -50,10 +94,29 @@ const User = (props) => {
                     alignItems: 'center'
                 }}>
                     <TextField variant="outlined" label="Search" />
-                    <Button variant="contained">Back</Button>
+                    <div style={{
+                        display: 'flex'
+                    }}>
+                        <div style={{
+                            marginRight: '8px'
+                        }}>
+                            {userList.length !== 0 ? (
+                                <ExcelFile
+                                    filename={"user_list"}
+                                    element={<Button variant="contained">Export Data as Excel</Button>}>
+                                    <ExcelSheet dataSet={DataSet} name={"user_list"} />
+                                </ExcelFile>
+                            ) : null}
+                        </div>
+                        <div>
+                            <Button variant="contained">Back</Button>
+                        </div>
+
+                    </div>
+
                 </div>
                 <div style={{
-                    marginTop:'16px'
+                    marginTop: '16px'
                 }}>
                     <Divider />
                 </div>
